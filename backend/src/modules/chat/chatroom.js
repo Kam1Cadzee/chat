@@ -19,4 +19,31 @@ const createChatRoom = ({name, image}) => {
   const getChatHistory = () => {
     return chatHistory.slice();
   }
-}
+  const addUser = user => {
+    console.log('User added');
+    members[user.id] = user;
+  }
+  const removeUser = user => {
+    console.log('User removed');;
+
+    delete members[user.id];
+  };
+
+  const getChatRoomInfo = () => ({
+    name,
+    image,
+    numMembers: members.size,
+  });
+
+  return {
+    broadcastMessage,
+    addEntry,
+    getChatHistory,
+    addUser,
+    removeUser,
+    getChatHistory,
+    getChatRoomInfo
+  }
+};
+
+module.exports = createChatRoom;

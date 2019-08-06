@@ -1,0 +1,55 @@
+const userTemplates = require('./templates/users');
+
+const clients = {};
+
+const addClient = client => {
+  console.log('Client added', client.id);
+
+  clients[client.id] = {client};
+};
+
+const registerClient = (client, user) => {
+  console.log('Client registered', client.id);
+  clients[client.id] = { client, user};
+};
+
+const removeClient = client => {
+  console.log('Client removed');
+
+  delete clients[client.id];
+};
+
+const getAvailableUsers = () => {
+  const allClients = Object.values(clients);
+
+  const uniqueUsers = new Set(
+      allClients
+          .filter(c => c.user)
+          .map(c => c.user.name)
+  );
+
+  return userTemplates.filter(u => !uniqueUsers.has(u.name));
+};
+
+const isUserAvailable = userName => {
+  return getAvailableUsers().some(u => u.name === userName);
+};
+
+const getUserByName = userName => {
+  return userTemplates.find(u => u.name === userName);
+};
+
+const getUserByClientId = clientId => {
+  const client = clients[clientId] || {};
+  return client.user;
+};
+
+module.exports = {
+  addClient,
+  registerClient,
+  removeClient,
+  getAvailableUsers,
+  isUserAvailable,
+  getUserByName,
+  getUserByClientId,
+};
